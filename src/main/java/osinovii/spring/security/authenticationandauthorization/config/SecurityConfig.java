@@ -2,6 +2,7 @@ package osinovii.spring.security.authenticationandauthorization.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
@@ -19,11 +20,12 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails admin = User.builder().username("admin").password(passwordEncoder.encode("admin")).build();
-        UserDetails user = User.builder().username("user").password(passwordEncoder.encode("user")).build();
+        UserDetails admin = User.builder().username("admin").password(passwordEncoder.encode("admin")).roles("USER").build();
+        UserDetails user = User.builder().username("user").password(passwordEncoder.encode("user")).roles("ADMIN").build();
         UserDetails anton = User.builder().username("alex").password(passwordEncoder.encode("password1")).build();
         return new InMemoryUserDetailsManager(admin, user, anton);
     }

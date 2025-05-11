@@ -2,6 +2,7 @@ package osinovii.spring.security.authenticationandauthorization.controllers;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +23,15 @@ public class AppController {
         return "Welcome to the unprotected page";
     }
 
+
     @GetMapping("/all-apps")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     public List<Application> getAllApps() {
         return appService.allApps();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Application getApp(@PathVariable int id) {
         return appService.appById(id);
     }
