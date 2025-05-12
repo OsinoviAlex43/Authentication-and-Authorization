@@ -3,11 +3,9 @@ package osinovii.spring.security.authenticationandauthorization.controllers;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import osinovii.spring.security.authenticationandauthorization.models.Application;
+import osinovii.spring.security.authenticationandauthorization.models.MyUser;
 import osinovii.spring.security.authenticationandauthorization.services.AppService;
 
 import java.util.List;
@@ -34,6 +32,12 @@ public class AppController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Application getApp(@PathVariable int id) {
         return appService.appById(id);
+    }
+
+    @PostMapping("/new-user")
+    public String addNewUser(@RequestBody MyUser user) {
+     appService.addUser(user);
+     return "User added";
     }
 
 }

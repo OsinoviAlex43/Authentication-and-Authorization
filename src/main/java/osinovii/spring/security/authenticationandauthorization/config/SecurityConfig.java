@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import osinovii.spring.security.authenticationandauthorization.services.MyUserDetailsService;
 
 import java.security.Security;
 import java.util.Arrays;
@@ -24,15 +25,15 @@ import java.util.Arrays;
 public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails admin = User.builder().username("admin").password(passwordEncoder.encode("admin")).roles("USER").build();
-        UserDetails user = User.builder().username("user").password(passwordEncoder.encode("user")).roles("ADMIN").build();
-        UserDetails anton = User.builder().username("alex").password(passwordEncoder.encode("password1")).build();
-        return new InMemoryUserDetailsManager(admin, user, anton);
+       // UserDetails admin = User.builder().username("admin").password(passwordEncoder.encode("admin")).roles("USER").build();
+      //  UserDetails user = User.builder().username("user").password(passwordEncoder.encode("user")).roles("ADMIN").build();
+       // UserDetails anton = User.builder().username("alex").password(passwordEncoder.encode("password1")).build();
+        return new MyUserDetailsService();
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("api/v1/apps/welcome").permitAll()
+                .authorizeHttpRequests(auth -> auth.requestMatchers("api/v1/apps/welcome","/new-user").permitAll()
                         .requestMatchers("api/v1/apps/**").authenticated())
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .build();
